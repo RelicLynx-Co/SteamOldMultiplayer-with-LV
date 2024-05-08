@@ -31,8 +31,6 @@ public class EnemySpawner : NetworkBehaviour
     {
         GameObject enemy = Instantiate(_enemy, transform.position, Quaternion.identity);
         enemy.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId);
-
-        // Optionally, you can set the position and rotation of the instantiated enemy
     }
 }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
 
-public class SkillMovement : MonoBehaviour
+public class SpelllMovement : MonoBehaviour
 {
     public float fireballSpeed = 5f; // Speed of the fireball
     public float selfDestructDelay = 5f;

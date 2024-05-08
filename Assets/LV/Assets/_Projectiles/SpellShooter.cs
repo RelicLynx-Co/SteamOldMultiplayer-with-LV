@@ -2,7 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
 
-public class FireballFunction : NetworkBehaviour
+public class SpellShooter : NetworkBehaviour
 {
     [SerializeField] private Transform initialTransform;
     [SerializeField] private List<GameObject> Projectiles;
