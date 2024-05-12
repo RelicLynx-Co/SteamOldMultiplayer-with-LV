@@ -19435,6 +19435,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionForce: 100
   explosionRadius: 3
+  enemyCollisionFunctionName: ApplyCollisionNetworkRigid
+  playerCollisionFunctionName: PlayerPushingCollision
 --- !u!1 &6383624399418989673
 GameObject:
   m_ObjectHideFlags: 0

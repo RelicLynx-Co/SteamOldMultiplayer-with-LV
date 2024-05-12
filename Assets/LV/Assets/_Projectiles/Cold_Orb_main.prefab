@@ -19433,8 +19433,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0469424e2c990f24381c02e0c228ba05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionForce: 20
+  explosionForce: 200
   explosionRadius: 1
+  enemyCollisionFunctionName: ApplyCollisionNetworkRigid
+  playerCollisionFunctionName: PlayerPushingCollision
 --- !u!1 &6383624399418989673
 GameObject:
   m_ObjectHideFlags: 0

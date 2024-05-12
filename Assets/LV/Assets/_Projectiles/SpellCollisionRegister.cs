@@ -1,11 +1,20 @@
 using UnityEngine;
 using Unity.Netcode;
-
+using System;
+using System.Reflection;
 public class SpellCollisionRegister : NetworkBehaviour
+
 {
+    [Header("Spell Parameters")]
     public float explosionForce = 100f;
     public float explosionRadius = 3f;
+    [Header("Enemy Collision Actions")]
+    [SerializeField] private string enemyCollisionFunctionName;
+    [Header("Player Collision Actions")]
+    [SerializeField] private string playerCollisionFunctionName;
 
+private GlobalFunctions.CollisionInfo collisionInfo;
+    
     private void OnCollisionEnter(Collision collision)
     {
         if (IsServer)
@@ -21,15 +30,16 @@ public class SpellCollisionRegister : NetworkBehaviour
 
         foreach (Collider collider in colliders)
         {
+                 collisionInfo = new GlobalFunctions.CollisionInfo(collider, point, explosionForce);
             if (collider.CompareTag("Player"))
             {
-                CharacterController playerController = collider.GetComponent<CharacterController>();
-                if (playerController != null)
+                if (!string.IsNullOrEmpty(playerCollisionFunctionName))
                 {
-                    // Calculate the direction away from the collision point
-                    Vector3 pushDirection = (playerController.transform.position - point).normalized;
-                    // Apply force to move the player away from the collision point
-                    playerController.Move(pushDirection * explosionForce * Time.deltaTime);
+                    MethodInfo method = typeof(GlobalFunctions).GetMethod(playerCollisionFunctionName);
+                    if (method != null)
+                    {
+                        method.Invoke(null, new object[] { collisionInfo });
+                    }
                 }
             }
             else
@@ -38,11 +48,15 @@ public class SpellCollisionRegister : NetworkBehaviour
                 NetworkObject netObject = collider.GetComponent<NetworkObject>();
                 if (netObject != null)
                 {
-                    ApplyCollisionServerRpc(point, velocity, netObject.NetworkObjectId);
+                    ApplyCollisionServerRpc( netObject.NetworkObjectId);
                 }
                 else
                 {
-                    ApplyCollision(point, velocity);
+                     MethodInfo method = typeof(GlobalFunctions).GetMethod(enemyCollisionFunctionName);
+                    if (method != null)
+                    {
+                        method.Invoke(null, new object[] { collisionInfo, netObject.NetworkObjectId });
+                    }
                 }
             }
 
@@ -51,39 +65,21 @@ public class SpellCollisionRegister : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void ApplyCollisionServerRpc(Vector3 collisionPoint, Vector3 collisionVelocity, ulong netObjectId)
+    private void ApplyCollisionServerRpc(ulong netObjectId)
     {
-        ApplyCollisionClientRpc(collisionPoint, collisionVelocity, netObjectId);
+        ApplyCollisionClientRpc(netObjectId);
     }
 
     [ClientRpc]
-    private void ApplyCollisionClientRpc(Vector3 collisionPoint, Vector3 collisionVelocity, ulong netObjectId)
+    private void ApplyCollisionClientRpc( ulong netObjectId)
     {
-        ApplyCollision(collisionPoint, collisionVelocity, netObjectId);
+         MethodInfo method = typeof(GlobalFunctions).GetMethod(enemyCollisionFunctionName);
+                    if (method != null)
+                    {
+                        method.Invoke(null, new object[] { collisionInfo, netObjectId});
+                    }
     }
-    private void ApplyCollision(Vector3 collisionPoint, Vector3 collisionVelocity, ulong netObjectId = 0)
-    {
-        if (IsServer)
-        {
-            NetworkObject netObject = null;
-            // Retrieve the networked object using the netObjectId
-            if (netObjectId != 0)
-                netObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[netObjectId];
-            if (netObjectId != 0 && netObject != null)
-            {
-                Rigidbody rb = netObject.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    // Calculate the direction from the collision point to the object's center
-                    Vector3 direction = rb.transform.position - collisionPoint;
-
-                    // Apply force based on the collision velocity and direction
-                    rb.AddForce(direction.normalized * explosionForce, ForceMode.Impulse);
-                }
-            }
-
-        }
-    }
+    
 
 
 }
