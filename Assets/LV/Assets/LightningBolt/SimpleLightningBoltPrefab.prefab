@@ -154,13 +154,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartObject: {fileID: 163122}
-  StartPosition: {x: 0, y: 0, z: 0}
+  StartPosition: {x: 30, y: 0, z: 0}
   EndObject: {fileID: 171180}
   EndPosition: {x: 0, y: 0, z: 0}
-  Generations: 6
-  Duration: 0.03
-  ChaosFactor: 0.15
-  ManualMode: 0
+  Generations: 0
+  Duration: 0.01
+  ChaosFactor: 0
+  ManualMode: 1
   Rows: 1
   Columns: 1
   AnimationMode: 0

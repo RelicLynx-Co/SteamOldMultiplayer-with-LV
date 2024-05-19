@@ -8,15 +8,15 @@ public class GlobalFunctions : NetworkBehaviour {
     public struct CollisionInfo
     {
         public Collider collider;
-        public int damage;
+        // public int damage;
         public Vector3 point;
         public float explosionForce;
 
-        public CollisionInfo(Collider collider, Vector3 point, float explosionForce, int damage)
+        public CollisionInfo(Collider collider, Vector3 point, float explosionForce)
         {
             this.collider = collider;
             this.point = point;
-            this.damage = damage;
+            // this.damage = damage;
             this.explosionForce = explosionForce;
         }
     }

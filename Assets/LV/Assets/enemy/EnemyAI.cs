@@ -52,8 +52,8 @@ public class EnemyAI : NetworkBehaviour
 
     private void Update()
     {
- if (transform.position.y <= -200)
-    {
+        if (transform.position.y <= -200)
+        {
             Destroy(gameObject);
         }
 
@@ -73,7 +73,7 @@ public class EnemyAI : NetworkBehaviour
         }
 
         if (!playerInSightRange && !playerInAttackRange)
-        {Patroling();}
+        { Patroling(); }
         if (playerInSightRange && !playerInAttackRange)
             ChasePlayer();
         if (playerInAttackRange && playerInSightRange)
@@ -81,7 +81,7 @@ public class EnemyAI : NetworkBehaviour
 
 
     }
-   
+
     private void Patroling()
     {
         if (!walkPointSet)
@@ -125,30 +125,30 @@ public class EnemyAI : NetworkBehaviour
         }
     }
 
-private void ChasePlayer()
-{
-    UnityEngine.AI.NavMeshAgent navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-    if (navMeshAgent != null && navMeshAgent.isActiveAndEnabled)
+    private void ChasePlayer()
     {
-        navMeshAgent.SetDestination(player.position);
-    }
-}
-        private void AttackPlayer()
+        UnityEngine.AI.NavMeshAgent navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (navMeshAgent != null && navMeshAgent.isActiveAndEnabled)
         {
-            agent.SetDestination(transform.position);
-            transform.LookAt(player);
-            if (!alreadyAttacked)
-            {
-                SpwanBulletServerRPC(transform.position, transform.rotation);
-                alreadyAttacked = true;
-                Invoke(nameof(ResetAttack), timeBetweenAttacks);
-            }
+            navMeshAgent.SetDestination(player.position);
         }
+    }
+    private void AttackPlayer()
+    { 
+        agent.SetDestination(transform.position);
+        transform.LookAt(player);
+        if (!alreadyAttacked)
+        {
+            SpwanBulletServerRPC(transform.position, transform.rotation);
+            alreadyAttacked = true;
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+        }
+    }
     [ServerRpc]
     private void SpwanBulletServerRPC(Vector3 position, Quaternion rotation, ServerRpcParams serverRpcParams = default)
     {
         float enemyHeight = GetComponent<Collider>().bounds.size.y;
-        Vector3 spawnPosition = position + rotation * Vector3.forward*2 + Vector3.up * (enemyHeight / 2f);
+        Vector3 spawnPosition = position + rotation * Vector3.forward * 2 + Vector3.up * (enemyHeight / 2f);
         // Instantiate the bullet
         GameObject inst_Bullet = Instantiate(projectile, spawnPosition, rotation);
 

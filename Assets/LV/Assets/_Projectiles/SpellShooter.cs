@@ -46,8 +46,8 @@ public class SpellShooter : NetworkBehaviour
     }
     public void FireSpell(Vector3 dir, Quaternion rotation)
     {
-        float enemyHeight = GetComponent<Collider>().bounds.size.y;
-        Vector3 shootFrom  = dir + rotation * Vector3.forward * 2 + Vector3.up * (enemyHeight / 2f);
+        float height = GetComponent<Collider>().bounds.size.y;
+        Vector3 shootFrom  = dir + rotation * Vector3.forward * 2 + Vector3.up * (height / 2f);
         var projectile = Instantiate(Projectiles[selectedSpell], shootFrom, rotation);
         projectile.GetComponent<NetworkObject>().SpawnWithOwnership(NetworkManager.Singleton.LocalClientId);
         selectedSpell = 404;
