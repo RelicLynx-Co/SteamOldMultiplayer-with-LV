@@ -2054,6 +2054,11 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 4276302722
       objectReference: {fileID: 0}
+    - target: {fileID: 3858193932761565846, guid: c1afe20f4fba63044a2fc29e74c94b06,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4357823385853283553, guid: c1afe20f4fba63044a2fc29e74c94b06,
         type: 3}
       propertyPath: sightRange

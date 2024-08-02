@@ -1,8 +1,9 @@
 using UnityEngine;
 using Unity.Netcode;
 
-
-public class GlobalFunctions : NetworkBehaviour {
+using System.Collections;
+using System.Reflection;
+public static class GlobalFunctions {
    
 
     public struct CollisionInfo
@@ -35,10 +36,25 @@ public class GlobalFunctions : NetworkBehaviour {
                 // Calculate the direction away from the collision point
                 Vector3 pushDirection = (playerController.transform.position - point).normalized;
                 // Apply force to move the player away from the collision point
-                playerController.Move(pushDirection * explosionForce * Time.deltaTime);
+                Vector3 force = pushDirection * explosionForce;
+                StartCoroutine(ApplyForceOverTime(playerController, force));
+                // playerController.Move(pushDirection * explosionForce * Time.deltaTime);
             }
         }
     }
+    private IEnumerator ApplyForceOverTime(CharacterController controller, Vector3 force)
+{
+    float duration = 0.5f; // Duration to apply the force
+    float elapsedTime = 0f;
+
+    while (elapsedTime < duration)
+    {
+        // Move the player in the push direction
+        controller.Move(force * Time.deltaTime);
+        elapsedTime += Time.deltaTime;
+        yield return null;
+    }
+}
     public static void ApplyCollisionNetworkRigid(CollisionInfo collisionInfo, ulong netObjectId = 0)
     {
             Collider collider = collisionInfo.collider;

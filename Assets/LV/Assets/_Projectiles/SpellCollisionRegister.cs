@@ -42,7 +42,7 @@ private GlobalFunctions.CollisionInfo collisionInfo;
                     }
                 }
             }
-            else
+            else if(collider.CompareTag("Enemy"))
             {
 
                 NetworkObject netObject = collider.GetComponent<NetworkObject>();
@@ -58,6 +58,10 @@ private GlobalFunctions.CollisionInfo collisionInfo;
                         method.Invoke(null, new object[] { collisionInfo, netObject.NetworkObjectId });
                     }
                 }
+            }
+            else {
+               		Debug.Log( collider.gameObject.tag);
+
             }
 
 

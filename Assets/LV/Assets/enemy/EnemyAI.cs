@@ -89,7 +89,7 @@ public class EnemyAI : NetworkBehaviour
             SearchWalkPoint();
         }
 
-        if (walkPointSet && agent.isActiveAndEnabled)
+        if (walkPointSet && agent.isActiveAndEnabled && agent.isOnNavMesh)
         {
             // Set destination and draw debug line
             agent.SetDestination(walkPoint);
@@ -135,6 +135,7 @@ public class EnemyAI : NetworkBehaviour
     }
     private void AttackPlayer()
     { 
+        if(agent.isOnNavMesh)
         agent.SetDestination(transform.position);
         transform.LookAt(player);
         if (!alreadyAttacked)
