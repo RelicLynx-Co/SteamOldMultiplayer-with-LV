@@ -37,12 +37,12 @@ public static class GlobalFunctions {
                 Vector3 pushDirection = (playerController.transform.position - point).normalized;
                 // Apply force to move the player away from the collision point
                 Vector3 force = pushDirection * explosionForce;
-                StartCoroutine(ApplyForceOverTime(playerController, force));
+                ApplyForceOverTime(playerController, force);
                 // playerController.Move(pushDirection * explosionForce * Time.deltaTime);
             }
         }
     }
-    private IEnumerator ApplyForceOverTime(CharacterController controller, Vector3 force)
+    private static IEnumerator ApplyForceOverTime(CharacterController controller, Vector3 force)
 {
     float duration = 0.5f; // Duration to apply the force
     float elapsedTime = 0f;
